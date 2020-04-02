@@ -13,5 +13,3 @@ app.use(express.json());
 app.use(routes);
 
 app.listen(3333);
-
-/* Start in Backend: 51:30m */
