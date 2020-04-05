@@ -39,5 +39,3 @@ module.exports = {
         return response.json(dev);
     }
 };
-
-/* Start in Backend: 1:15:50 */
