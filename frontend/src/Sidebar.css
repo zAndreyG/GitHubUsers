@@ -65,5 +65,3 @@ aside form button[ type=submit] {
 aside form button[ type=submit]:hover {
     background: #6931ca;
 }
-
-/* Start in 59:15m --> run: yarn start */
