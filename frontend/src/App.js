@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from './services/api';
 
 import './global.css'
 import './App.css'
@@ -10,6 +11,10 @@ import './Main.css'
 // Estado     --> Informações mantidas pelo componente (Lembrar: imutabilidade)
 
 function App() {
+  const [devs, setDevs] = useState([]);
+
+  const [github_username, setGithubUsernames] = useState('');
+  const [techs, setTechs] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
 
@@ -29,26 +34,67 @@ function App() {
     )
   }, []);
 
+  useEffect(() => {
+    async function loadDevs() {
+      const response = await api.get('/devs');
+
+      setDevs(response.data);
+    }
+
+    loadDevs();
+  }, []);
+
+  
+
+  async function handleAddDev(e) {
+    e.preventDefault();
+    
+    const response = await api.post('/devs', {
+      github_username,
+      techs,
+      longitude,
+      latitude,
+    })
+
+    setGithubUsernames('');
+    setTechs('');
+
+    setDevs([...devs, response.data]);
+  }
+
   return (
     <div id="app">
       <aside>
         <strong>Cadastrar</strong>
-        <form>
+        <form onSubmit={handleAddDev}>
           <div className="input-block">
             <label htmlFor="github_username">Usuário do Github</label>
-            <input type="text" name="github_username" id="github_username" required/>
+            <input 
+              type="text" 
+              name="github_username" 
+              id="github_username" 
+              required
+              value={github_username}
+              onChange={e => setGithubUsernames(e.target.value)}
+            />
           </div>
 
           <div className="input-block">
             <label htmlFor="techs">Tecnologias</label>
-            <input type="text" name="techs" id="techs" required/>
+            <input 
+              type="text" 
+              name="techs" 
+              id="techs" 
+              required
+              value={techs}
+              onChange={e => setTechs(e.target.value)}
+            />
           </div>
 
           <div className="input-group">
             <div className="input-block">
               <label htmlFor="latitude">Latitude</label>
-              <input 
-                type="number"
+              <input
                 name="latitude" 
                 id="latitude" 
                 required 
@@ -60,7 +106,6 @@ function App() {
             <div className="input-block">
               <label htmlFor="longitude">Longitude</label>
               <input 
-                type="number" 
                 name="longitude" 
                 id="longitude" 
                 required 
@@ -76,41 +121,20 @@ function App() {
 
       <main>
         <ul>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars3.githubusercontent.com/u/49600701?s=460&u=2d0867f70de1ce40d7defb1647fd192c0ca29bc2&v=4" alt="Andrey Gonçalves"/>
-              <div className="user-info">
-                <strong>Andrey Gonçalves</strong>
-                <span>ReactJS, React Native, NodeJS</span>
-              </div>
-            </header>
-            <p>Mais um programador neste mundo gigante.</p>
-            <a href="https://github.com/zAndreyG">Acessar perfil no Github</a>
-          </li>
-
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars3.githubusercontent.com/u/49600701?s=460&u=2d0867f70de1ce40d7defb1647fd192c0ca29bc2&v=4" alt="Andrey Gonçalves"/>
-              <div className="user-info">
-                <strong>Andrey Gonçalves</strong>
-                <span>ReactJS, React Native, NodeJS</span>
-              </div>
-            </header>
-            <p>Mais um programador neste mundo gigante.</p>
-            <a href="https://github.com/zAndreyG">Acessar perfil no Github</a>
-          </li>
-
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars3.githubusercontent.com/u/49600701?s=460&u=2d0867f70de1ce40d7defb1647fd192c0ca29bc2&v=4" alt="Andrey Gonçalves"/>
-              <div className="user-info">
-                <strong>Andrey Gonçalves</strong>
-                <span>ReactJS, React Native, NodeJS</span>
-              </div>
-            </header>
-            <p>Mais um programador neste mundo gigante.</p>
-            <a href="https://github.com/zAndreyG">Acessar perfil no Github</a>
-          </li>
+          {devs.map(dev => (
+            <li key={dev._id} className="dev-item">
+              <header>
+                <img src={dev.avatar_url} alt={dev.name}/>
+                <div className="user-info">
+                  <strong>{dev.name}</strong>
+                  <span>{dev.techs.join(', ')}</span>
+                </div>
+              </header>
+              <p>{dev.bio}</p>
+              <a href={`https://github.com/${dev.github_username}`}>Acessar perfil no Github</a>
+            </li>
+          ))}
+          
         </ul>
       </main>
     </div>
