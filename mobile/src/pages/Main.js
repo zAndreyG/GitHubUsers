@@ -1,8 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import MapView from 'react-native-maps';
 
 function Main() {
-    return <View />
+    return <MapView style={styles.map} />
 }
 
+const styles = StyleSheet.create({
+    map: {
+        flex: 1
+    },
+})
+
 export default Main;
+
+/* Start in: 49:08m --> yarn start */
