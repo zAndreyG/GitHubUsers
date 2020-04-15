@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "Find Devs",
+    "slug": "finddevs",
     "platforms": [
       "ios",
       "android",
