@@ -11,7 +11,6 @@ export default function Routes() {
     return (
         <NavigationContainer>
             <AppStack.Navigator screenOptions={{
-                headerShown: true,
                 headerStyle: {
                     backgroundColor: '#7D40E7'
                 },
