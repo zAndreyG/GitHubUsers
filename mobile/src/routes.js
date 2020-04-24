@@ -15,9 +15,10 @@ export default function Routes() {
                     backgroundColor: '#7D40E7'
                 },
                 headerTintColor: '#FFF',
+                headerBackTitleVisible: false,
             }}>
                 <AppStack.Screen name="DevRadar" component={Main} />
-                <AppStack.Screen name="Perfil" component={Profile} />
+                <AppStack.Screen name="Profile" component={Profile} />
             </AppStack.Navigator>
         </NavigationContainer>
     );
