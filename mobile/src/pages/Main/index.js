@@ -11,14 +11,12 @@ import styles from './styles';
 export default function Main() {
     const [devs, setDevs] = useState([]);
     const [currentRegion, setCurrentRegion] = useState(null);
-    const [techs, setTechs] = useState([]);
+    const [techs, setTechs] = useState('');
 
     const navigation = useNavigation();
 
-    // let github_username= '';
-
-    function navigateToProfile() {
-        navigation.navigate('Profile', { github_username: dev.github_username });
+    function navigateToProfile(github_username) {
+        navigation.navigate('Profile', { github_username });
     }
     
     useEffect(() => {
@@ -73,10 +71,19 @@ export default function Main() {
               style={styles.map}
             >
                 {devs.map(dev => (
-                    <Marker key={dev._id} coordinate={{ longitude: dev.location.coordinates[0], latitude: dev.location.coordinates[1] }}>
-                        <Image style={styles.avatar} source={{ uri: dev.avatar_url }} />
+                    <Marker 
+                        key={dev._id} 
+                        coordinate={{
+                            longitude: dev.location.coordinates[0],
+                            latitude: dev.location.coordinates[1],
+                        }}
+                    >
+                        <Image
+                            style={styles.avatar}
+                            source={{ uri: dev.avatar_url }}
+                        />
 
-                        <Callout onPress={() => navigateToProfile(github_username)}>
+                        <Callout onPress={() => navigateToProfile(dev.github_username)}>
                             <View style={styles.callout}>
                                 <Text style={styles.devName}>{dev.name}</Text>
                                 <Text style={styles.devBio}>{dev.bio}</Text>
