@@ -6,7 +6,7 @@ import { requestPermissionsAsync, getCurrentPositionAsync } from "expo-location"
 import { MaterialIcons }  from '@expo/vector-icons';
 
 import api from '../../services/api';
-import { connect, disconnect } from '../../services/socket';
+import { connect, disconnect, subscribeToNewDevs } from '../../services/socket';
 import styles from './styles';
 
 export default function Main() {
@@ -19,7 +19,7 @@ export default function Main() {
     function navigateToProfile(github_username) {
         navigation.navigate('Profile', { github_username });
     }
-    
+
     useEffect(() => {
         async function loadInitialPosition() {
             const { granted } = await requestPermissionsAsync();
@@ -43,7 +43,13 @@ export default function Main() {
         loadInitialPosition();
     }, []);
 
+    useEffect(() => {
+        subscribeToNewDevs(dev => setDevs([...devs, dev]));
+    }, [devs]);
+
     function setupWebsocket() {
+        disconnect();
+
         const { latitude, longitude } = currentRegion;
 
         connect(
@@ -124,4 +130,4 @@ export default function Main() {
     );
 }
 
-/* Problem: 1:32h --> yarn start */
+/* Project Finished --> Back: yarn dev -- Mobile: yarn start -- Web: yarn start */

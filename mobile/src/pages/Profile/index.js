@@ -3,8 +3,6 @@ import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import styles from './styles';
-
 function Profile() {
     const navigation = useNavigation();
     const route = useRoute();
